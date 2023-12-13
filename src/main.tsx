@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import 'reset-css'
+import 'virtual:svg-icons-register'
 import App from './App.tsx'
 import '@/assets/styles/global.scss'
 import { BrowserRouter } from 'react-router-dom'

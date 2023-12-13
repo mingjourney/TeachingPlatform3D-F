@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Card, Col, Row } from 'antd'
-import HotIcon from '@/assets/icon/hot-icon.svg' // 根据实际路径修改
+import { Button, Col, Row } from 'antd'
 
 import './Home.css'
 import CourseCard from '@/components/CourseCard/CourseCard'
+import SvgIcon from '@/components/SvgIcon/SvgIcon'
 const Home: React.FC = () => {
-  const [popularClassList, setPopularClassList] = useState([
+  const [popularClassList] = useState([
     {
       id: 12342,
       title: '定上限积分',
@@ -19,9 +19,22 @@ const Home: React.FC = () => {
       spareSeat: 0,
       onlineNumber: 15,
       ascribedCourseSeries: '杨超的《408》'
+    },
+    {
+      id: 12346,
+      title: '计算机网络',
+      spareSeat: 0,
+      onlineNumber: 15,
+      ascribedCourseSeries: '杨超的《408》'
+    },
+    {
+      id: 12345,
+      title: '计算机网络',
+      spareSeat: 0,
+      onlineNumber: 15,
+      ascribedCourseSeries: '杨超的《408》'
     }
   ])
-  const style: React.CSSProperties = { background: '#0092ff', padding: '8px 0' }
 
   return (
     <div
@@ -35,10 +48,15 @@ const Home: React.FC = () => {
             本平台集成了3D教学面板、
             AI机器人，为学生/老师提供全面、专业的线上教学环境。
           </p>
-          <h2>
-            热门课堂
-            <HotIcon />{' '}
-          </h2>
+          <div className="sub-line">
+            <h2>
+              热门课堂 <SvgIcon name="popular" />
+            </h2>
+            <Button>
+              <SvgIcon name="refresh" />
+              换一批
+            </Button>
+          </div>
           <Row gutter={[16, 16]} className="card-list">
             {popularClassList.map((course) => (
               <Col className="gutter-row" span={6} key={course.id}>
