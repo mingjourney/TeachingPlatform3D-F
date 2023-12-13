@@ -1,10 +1,6 @@
 # 前端学习 项目
 
-这是一个使用 Vite、React、TypeScript、ESLint、Prettier、Husky、Commitlint 和 Ant Design 构建的项目，旨在coding并记录代码问题。
-
-## 前端开发问题和笔记
-
-在这个项目中，我们记录了前端开发（包括算法题）过程中遇到的问题和笔记。你可以在[yuque](https://www.yuque.com/moying-5dh6p/lh8oaa/elwhxnkxfz3qcd32)中找到详细的记录。
+这是一个3D可视化教学平台，将学习的技术聚合。
 
 ## 安装
 
@@ -13,11 +9,14 @@
 1. 克隆项目到本地:
 
    ```bash
-   git clone https://github.com/mingjourney/code-challenges.git
-   cd code-challenges
+   git clone git@github.com:mingjourney/TeachingPlatform3D-F.git
+   cd TeachingPlatform3D-F
+   ```
+
 2. 安装依赖
    ```bash
    yarn install
+   ```
 
 ## 运行
 
@@ -79,4 +78,4 @@
 
 ## 许可
 
-这个项目基于 MIT 许可。有关详细信息，请查阅[LICENSE](https://chat.openai.com/c/LICENSE)文件。
+这个项目基于 MIT 许可。有关详细信息，请查阅[LICENSE]文件。
