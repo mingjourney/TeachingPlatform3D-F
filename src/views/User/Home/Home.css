@@ -1,0 +1,10 @@
+
+
+
+
+
+@media screen and (max-width: 576px) {
+    .ant-card {
+        margin-bottom: 16px;
+    }
+}

@@ -1,0 +1,13 @@
+:root {
+  --color: #f1f2f5;
+}
+body {
+  background-color: var(--color);
+  user-select: none;
+  line-height: 1.5;  
+  height: 100%;    
+  margin: 0;    
+}
+img{
+  -webkit-user-drag:none;
+}
