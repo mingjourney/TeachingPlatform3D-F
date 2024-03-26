@@ -27,9 +27,10 @@ const UserApp: React.FC = () => {
         <Layout style={{ padding: '2rem' }}>
           <Content
             style={{
-              padding: 24,
+              padding: 34,
               margin: 0,
-              height: 500,
+              minHeight: 900,
+              borderRadius: '20px',
               background: colorBgContainer
             }}
           >

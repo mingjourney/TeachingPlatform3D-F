@@ -37,41 +37,36 @@ const Home: React.FC = () => {
   ])
 
   return (
-    <div
-      className="site-layout-content"
-      style={{ height: '85vh', overflow: 'auto' }}
-    >
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={24} lg={24}>
-          <h1>欢迎来到3D可视化学习平台</h1>
-          <p>
-            本平台集成了3D教学面板、
-            AI机器人，为学生/老师提供全面、专业的线上教学环境。
-          </p>
-          <div className="sub-line">
-            <h2>
-              热门课堂 <SvgIcon name="popular" />
-            </h2>
-            <Button>
-              <SvgIcon name="refresh" />
-              换一批
-            </Button>
-          </div>
-          <Row gutter={[16, 16]} className="card-list">
-            {popularClassList.map((course) => (
-              <Col className="gutter-row" span={6} key={course.id}>
-                <CourseCard
-                  title={course.title}
-                  spareSeat={course.spareSeat}
-                  onlineNumber={course.onlineNumber}
-                  ascribedCourseSeries={course.ascribedCourseSeries}
-                />
-              </Col>
-            ))}
-          </Row>
-        </Col>
-      </Row>
-    </div>
+    <Row gutter={[16, 16]}>
+      <Col xs={24} sm={24} md={24} lg={24}>
+        <h1>欢迎来到3D可视化学习平台</h1>
+        <p>
+          本平台集成了3D教学面板、
+          AI机器人，为学生/老师提供全面、专业的线上教学环境。
+        </p>
+        <div className="sub-line">
+          <h2>
+            热门课堂 <SvgIcon name="popular" />
+          </h2>
+          <Button>
+            <SvgIcon name="refresh" />
+            换一批
+          </Button>
+        </div>
+        <Row gutter={[16, 16]} className="card-list">
+          {popularClassList.map((course) => (
+            <Col className="gutter-row" span={6} key={course.id}>
+              <CourseCard
+                title={course.title}
+                spareSeat={course.spareSeat}
+                onlineNumber={course.onlineNumber}
+                ascribedCourseSeries={course.ascribedCourseSeries}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Col>
+    </Row>
   )
 }
 export default Home
