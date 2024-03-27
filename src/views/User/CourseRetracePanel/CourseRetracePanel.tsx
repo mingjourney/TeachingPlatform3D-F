@@ -1,5 +1,7 @@
 import React from 'react'
-import WebRTCExample from '../WebRTCExample/WebRTCExample'
+import WebRTCExample from '../WebRTCExample/WebRTCExample2'
+import 'webrtc-adapter'
+
 const CourseRetracePanel: React.FC = () => {
   return (
     <div>

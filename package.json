@@ -2,6 +2,7 @@
   "name": "leetcode-code-web",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://mingjourney.github.io/github-3d-demo",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -13,11 +14,14 @@
     "@ant-design/icons": "^5.2.6",
     "@craco/craco": "^7.1.0",
     "antd": "^5.11.0",
+    "npm": "^10.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.19.0",
     "sass": "^1.69.5",
-    "three": "^0.159.0"
+    "socket.io-client": "^4.7.5",
+    "three": "^0.159.0",
+    "webrtc-adapter": "^8.2.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.2.0",

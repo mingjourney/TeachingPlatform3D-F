@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteEslint from 'vite-plugin-eslint'
 import path from 'path'
+import * as fs from 'fs'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 // https://vitejs.dev/config/
@@ -18,6 +19,12 @@ export default defineConfig({
       symbolId: 'icon-[dir]-[name]'
     })
   ],
+  server: {
+    https: {
+      key: fs.readFileSync(`${__dirname}/localhost+2-key.pem`),
+      cert: fs.readFileSync(`${__dirname}/localhost+2.pem`)
+    }
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')

@@ -1,84 +1,76 @@
-import { Select, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 const WebRTCExample: React.FC = () => {
-  const [imgList, setImgList] = useState<string[]>([])
-  const [videoDeviceList, setVideoDeviceList] = useState<any>([
-    { label: 'dd', value: 'dea' }
-  ])
-
-  const getLocalStream = async (constraints: MediaStreamConstraints) => {
-    // 获取媒体流
-    const stream = await navigator.mediaDevices.getUserMedia(constraints)
-    playLocalStream(stream)
+  // 内网中用
+  const pc = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: 'stun:stun.voipbuster.com'
+      }
+    ]
+  })!
+  const [offerSdp, setOfferSdp] = useState<string>('')
+  const [answerSdp, setAnswerSdp] = useState<string>('')
+  const init = async () => {
+    const videoLocal = document.getElementById('local') as HTMLVideoElement
+    const videoRemote = document.getElementById('remote') as HTMLVideoElement
+    const localStream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 198, height: 108 },
+      audio: false
+    })
+    videoLocal.srcObject = localStream
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream)
+    })
+    pc.ontrack = (event) => {
+      videoRemote.srcObject = event.streams[0]
+    }
   }
-  const playLocalStream = (stream: any) => {
-    const videoEl = document.getElementById('localVideo') as HTMLVideoElement
-    videoEl.srcObject = stream
+  const connection = async () => {
+    const offer = await pc.createOffer()
+    await pc.setLocalDescription(offer)
+    pc.onicecandidate = async (event) => {
+      if (event.candidate) {
+        setOfferSdp(JSON.stringify(pc.localDescription))
+      }
+    }
+    console.log('pc', pc.localDescription)
   }
-  const getDevices = async () => {
-    const devices = await navigator.mediaDevices.enumerateDevices()
-    const videoDevices = devices.filter(
-      (device) => device.kind === 'videoinput'
-    )
-    const videoDevicesOption = videoDevices.map((item: any) => ({
-      label: item.label,
-      value: item.deviceId
-    }))
-    setVideoDeviceList(videoDevicesOption)
+  const createAnswer = async () => {
+    // 解析字符串
+    console.log()
+    const offer = JSON.parse(offerSdp)
+    pc.onicecandidate = async (event) => {
+      // Event that fires off when a new answer ICE candidate is created
+      if (event.candidate) {
+        setAnswerSdp(JSON.stringify(pc.localDescription))
+      }
+    }
+    await pc.setRemoteDescription(offer)
+    const answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
   }
-  const handleCurVideoDeviceChange = (value: string) => {
-    console.log('changevalue', value)
+  const addAnswer = async () => {
+    const answer = JSON.parse(answerSdp)
+    if (!pc.currentRemoteDescription) {
+      pc.setRemoteDescription(answer)
+    }
   }
-
   useEffect(() => {
-    getDevices()
-    getLocalStream({ video: { width: 192, height: 108 }, audio: false })
-    // console.log(
-    //   '🚀🚀🚀 / SupportedConstraints',
-    //   navigator.mediaDevices.getSupportedConstraints()
-    // )
-  }, [])
-  const takePhoto = () => {
-    const videoEl = document.getElementById('localVideo') as HTMLVideoElement
-    const canvas = document.createElement('canvas')
-    canvas.width = videoEl.videoWidth
-    canvas.height = videoEl.videoHeight
-    const ctx = canvas.getContext('2d')!
-    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height)
-    setImgList((preImgList) => [...preImgList, canvas.toDataURL('image/png')])
-    console.log('🚀🚀🚀 / imgList', imgList)
-  }
+    async function webRTC() {
+      await init()
+      await connection()
+      await createAnswer()
+      await addAnswer()
+    }
+    webRTC()
+  }, []) // 报错 仅允许在异步函数和模块顶级使用 "await" 表达式。ts(1308)
   return (
     <div>
       <h2>WebRTCExample</h2>
-      <Select
-        style={{ width: 120 }}
-        options={[
-          { value: 'jack', label: 'Jack' },
-          { value: 'lucy', label: 'Lucy' },
-          { value: 'Yiminghe', label: 'yiminghe' },
-          { value: 'disabled', label: 'Disabled', disabled: true }
-        ]}
-      />
-      <video id="localVideo" autoPlay playsInline muted></video>
-      <button onClick={takePhoto}>拍照</button>
-      <h3>拍照列表</h3>
-      <Space wrap>
-        <Select
-          style={{ width: 120 }}
-          onChange={handleCurVideoDeviceChange}
-          options={videoDeviceList}
-        ></Select>
-      </Space>
-
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        {imgList.map((item, index) => (
-          <span key={index}>
-            <h4>{index}</h4>
-            <img src={item} alt={item} />
-          </span>
-        ))}
-      </div>
+      <h3>本地相机</h3>
+      <video id="local" autoPlay playsInline muted></video>
+      <h3>远程相机</h3>
+      <video id="remote" autoPlay playsInline></video>
     </div>
   )
 }
