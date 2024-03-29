@@ -10,13 +10,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
+      - run: npm install -g yarn
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install and Build
         run: |
-          npm install
-          npm run-script build
+          yarn install
+          yarn run build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
