@@ -1,9 +1,7 @@
 name: CI
 # Event设置为main分支的pull request事件，
 # 这里的main分支相当于master分支，github项目新建是把main设置为默认分支，我懒得改了所以就保持这样吧
-on:
-  pull_request:
-    branches: main
+on: [push]
 jobs:
   # 只需要定义一个job并命名为CI
   CI:
@@ -41,6 +39,6 @@ jobs:
         # 通过前面章节定义的命令行执行代码扫描
         run: yarn lint
       # 运行自动化测试
-      - name: Running Test
+      - name: Running dev
         # 通过前面章节定义的命令行执行自动化测试
-        run: yarn test
+        run: yarn run dev
