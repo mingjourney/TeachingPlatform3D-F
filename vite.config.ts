@@ -23,6 +23,13 @@ export default defineConfig({
     https: {
       key: fs.readFileSync(`${__dirname}/localhost+2-key.pem`),
       cert: fs.readFileSync(`${__dirname}/localhost+2.pem`)
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:11111',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
     }
   },
   resolve: {

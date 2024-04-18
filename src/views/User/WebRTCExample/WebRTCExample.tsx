@@ -14,7 +14,7 @@ const WebRTCExample: React.FC = () => {
     const videoLocal = document.getElementById('local') as HTMLVideoElement
     const videoRemote = document.getElementById('remote') as HTMLVideoElement
     const localStream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 198, height: 108 },
+      video: { width: 300, height: 150 },
       audio: false
     })
     videoLocal.srcObject = localStream
@@ -66,11 +66,47 @@ const WebRTCExample: React.FC = () => {
   }, []) // 报错 仅允许在异步函数和模块顶级使用 "await" 表达式。ts(1308)
   return (
     <div>
-      <h2>WebRTCExample</h2>
+      <div className="m-4"></div>
+
+      <h2 className="text-lg">P2P测试</h2>
+      <div className="m-4"></div>
+
       <h3>本地相机</h3>
-      <video id="local" autoPlay playsInline muted></video>
+      <div className="m-4"></div>
+
+      <video
+        id="local"
+        autoPlay
+        playsInline
+        muted
+        className="border border-gray-300"
+      ></video>
+      <div className="m-4"></div>
+
       <h3>远程相机</h3>
-      <video id="remote" autoPlay playsInline></video>
+      <div className="m-4"></div>
+
+      <video
+        id="remote"
+        autoPlay
+        playsInline
+        className="border border-gray-300"
+      ></video>
+      <div className="m-4"></div>
+      <a
+        href="https://localhost:54321/test-eye-tracker-video"
+        className=" text-sky-600"
+      >
+        眼动上身姿态单机测试
+      </a>
+      <div className="m-4"></div>
+
+      <a
+        href="https://localhost:54321/test-signaling-p2p"
+        className=" text-sky-600"
+      >
+        信服服务器webRTC共享室
+      </a>
     </div>
   )
 }

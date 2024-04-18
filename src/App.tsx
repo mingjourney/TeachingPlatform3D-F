@@ -1,9 +1,9 @@
 import { useRoutes } from 'react-router-dom'
 import router from './router'
-// import './App.css'
+import './app.css'
 function App() {
   const outLet = useRoutes(router)
-  return <div className="App">{outLet}</div>
+  return <div className="h-full">{outLet}</div>
 }
 
 export default App

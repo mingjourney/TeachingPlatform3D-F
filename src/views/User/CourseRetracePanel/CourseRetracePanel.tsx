@@ -5,7 +5,7 @@ import 'webrtc-adapter'
 const CourseRetracePanel: React.FC = () => {
   return (
     <div>
-      CourseRetracePanel
+      <h1 className="text-lg">难点功课测试阶段 成果展示</h1>
       <WebRTCExample />
     </div>
   )

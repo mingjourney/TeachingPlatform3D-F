@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'virtual:svg-icons-register'
 import App from './App.tsx'
+import '@/utils/axiosInstance'
+
 import '@/assets/styles/global.scss'
 import { BrowserRouter } from 'react-router-dom'
 ReactDOM.createRoot(document.getElementById('root')!).render(
