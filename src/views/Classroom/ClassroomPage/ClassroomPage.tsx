@@ -8,7 +8,7 @@ const ClassroomPage: React.FC = () => {
   }
   return (
     <div>
-      教室列表2
+      教室列表23232
       <Button onClick={AddClassroom}>新建教室</Button>
     </div>
   )

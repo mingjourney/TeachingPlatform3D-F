@@ -1,15 +1,16 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'virtual:svg-icons-register'
 import App from './App.tsx'
-import '@/utils/axiosInstance'
-
-import '@/assets/styles/global.scss'
+import { store } from './store/store.ts'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import '@/assets/styles/global.scss'
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <Provider store={store}>
       <App />
-    </BrowserRouter>
-  </React.StrictMode>
+    </Provider>
+  </BrowserRouter>
+  // </React.StrictMode>
 )

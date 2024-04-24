@@ -4,7 +4,6 @@ import { Menu, Layout, Dropdown, Space } from 'antd'
 import type { MenuProps } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DownOutlined } from '@ant-design/icons'
-
 const { Header } = Layout
 
 // const selectKeys1 = [
@@ -12,17 +11,22 @@ const { Header } = Layout
 //     ? '/' + props.location.pathname.split('/')[1]
 //     : '/'
 // ]
-
+import { useAppSelector, useAppDispatch } from '@/store/hooks'
 const CustomHeader: React.FC<{
   items: MenuProps['items']
   dropItems: MenuProps['items']
 }> = ({ items, dropItems }) => {
+  const user = useAppSelector((state) => state.user)
   const { pathname } = useLocation()
   const key = pathname.split('/')[1] ? '/' + pathname.split('/')[1] : '/'
   const navigate = useNavigate()
   const menuClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e)
     navigate(e.key)
+  }
+  const handleDropdownClick: MenuProps['onClick'] = ({ key }) => {
+    
+    navigate(key)
   }
   // const dropClick = (e: any) => {
   //   console.log('click ', e)
@@ -40,15 +44,18 @@ const CustomHeader: React.FC<{
         theme="dark"
         mode="horizontal"
         className="flex"
-        inlineCollapsed={false}
+        // inlineCollapsed={false}
         defaultSelectedKeys={[key]}
         items={items}
         onClick={menuClick}
       />
-      <Dropdown className="text-zinc-300" menu={{ items: dropItems }}>
-        <a>
+      <Dropdown
+        className="text-zinc-300"
+        menu={{ items: dropItems, onClick: handleDropdownClick }}
+      >
+        <a onClick={(e) => e.preventDefault()}>
           <Space>
-            gugu
+            {user.name}
             <DownOutlined />
           </Space>
         </a>

@@ -1,4 +1,5 @@
 import { getAllClassroom } from '@/api/classroom/classroom'
+import BoxScrolling from '@/views/Three/BoxScrolling/BoxScrolling'
 import { Button, Card } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +17,7 @@ const ClassroomHome: React.FC = () => {
   }
   const [classroomList, setClassroomList] = useState<Classroom[]>([])
   useEffect(() => {
-    fetchClassroomList()
+    // fetchClassroomList()
   }, [])
   const fetchClassroomList = async () => {
     const { data } = await getAllClassroom({})
@@ -28,7 +29,10 @@ const ClassroomHome: React.FC = () => {
   }
   return (
     <div>
-      <h2 className="text-lg pb-2">教室列表</h2>
+      <h2 className="flex text-lg pb-2">
+        教室列表
+        <BoxScrolling />
+      </h2>
       <div className="flex">
         {classroomList.map(
           ({ id, classroomName, userId, startTime, endTime }) => (

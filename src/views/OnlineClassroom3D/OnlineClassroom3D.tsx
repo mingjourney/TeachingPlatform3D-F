@@ -1,10 +1,17 @@
 import { Button, Drawer, message } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import io, { Socket } from 'socket.io-client'
+import ThreeScene from '../Three/ThreeScene/ThreeScene'
 
 const OnlineclassNameroom3D: React.FC = () => {
   const { roomId } = useParams()
+
+  const localVideoRef = useRef<HTMLVideoElement>(null)
+  const remoteVideoRef = useRef<HTMLVideoElement>(null)
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null)
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null)
+  const [cameraOpen, setCameraOpen] = useState(true)
   console.log('id', roomId)
   const peerConnection = new RTCPeerConnection({
     iceServers: [
@@ -17,8 +24,6 @@ const OnlineclassNameroom3D: React.FC = () => {
   const userId = Math.random().toString(36).substring(2)
   // const roomId = ref('3333')
   let socket: Socket
-  let localStream: MediaStream
-  let remoteStream: MediaStream
   let offerSdp = ''
 
   function initConnect() {
@@ -88,30 +93,52 @@ const OnlineclassNameroom3D: React.FC = () => {
     socket.emit('join', { userId, roomId: roomId })
   }
 
-  const init = async () => {
-    const localVideo = document.getElementById('local') as HTMLVideoElement
-    const remoteVideo = document.getElementById(
-      'remote-video'
-    ) as HTMLVideoElement
-    localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false
-    })
-    remoteStream = new MediaStream()
-    localVideo.srcObject = localStream
-    remoteVideo.srcObject = remoteStream
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false
+        })
+        setLocalStream(stream)
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream
+        }
 
-    localStream.getTracks().forEach((track) => {
-      peerConnection.addTrack(track, localStream)
-    })
+        const pc = new RTCPeerConnection()
+        pc.ontrack = (event) => {
+          const remoteStream = new MediaStream()
+          event.streams[0]
+            .getTracks()
+            .forEach((track) => remoteStream.addTrack(track))
+          setRemoteStream(remoteStream)
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = remoteStream
+          }
+        }
 
-    peerConnection.ontrack = (event) => {
-      event.streams[0].getTracks().forEach((track) => {
-        remoteStream.addTrack(track)
-      })
+        stream.getTracks().forEach((track) => {
+          pc.addTrack(track, stream)
+        })
+
+        // 初始化连接
+        console.log('调用initConnect')
+
+        initConnect()
+      } catch (error) {
+        console.error('Error accessing media devices.', error)
+      }
     }
-    initConnect()
-  }
+
+    init()
+
+    // cleanup
+    return () => {
+      if (localStream) {
+        localStream.getTracks().forEach((track) => track.stop())
+      }
+    }
+  }, [])
 
   // 创建 offer
   async function createOffer() {
@@ -160,10 +187,9 @@ const OnlineclassNameroom3D: React.FC = () => {
   }
 
   // 打关摄像头
-  const [cameraOpen, setCameraOpen] = useState(true)
   function handleCamera() {
     setCameraOpen(!cameraOpen)
-    localStream.getVideoTracks().forEach((track) => {
+    localStream!.getVideoTracks().forEach((track) => {
       track.enabled = cameraOpen
     })
   }
@@ -178,9 +204,6 @@ const OnlineclassNameroom3D: React.FC = () => {
     socket.disconnect()
   }
 
-  useEffect(() => {
-    init()
-  })
   const [cemaraWindowOpen, setCemaraWindowOpen] = useState(false)
 
   const showDrawer = () => {
@@ -202,6 +225,7 @@ const OnlineclassNameroom3D: React.FC = () => {
           <div className="video-title">远程视频</div>
           <video
             id="remote-video"
+            ref={remoteVideoRef}
             className="remote-video"
             autoPlay
             playsInline
@@ -210,7 +234,7 @@ const OnlineclassNameroom3D: React.FC = () => {
         <div className="w-20">
           <div className="video-box">
             <div className="video-title">我</div>
-            <video id="local" autoPlay playsInline></video>
+            <video ref={localVideoRef} autoPlay playsInline></video>
             <div className="operation">
               <Button onClick={handleCamera}>
                 {cameraOpen ? '关闭' : '打开'}视频
@@ -220,12 +244,11 @@ const OnlineclassNameroom3D: React.FC = () => {
           </div>
         </div>
       </Drawer>
-      <div className="w-full text-center">教室编号：{roomId}</div>
-      <div className="flex w-full">
-        <Button type="primary" onClick={showDrawer}>
-          Open
-        </Button>
+      <div className="absolute w-full text-center ">教室编号：{roomId}</div>
+      <div className="absolute w-full p-4">
+        <Button onClick={showDrawer}>打开摄像头页面</Button>
       </div>
+      <ThreeScene />
     </div>
   )
 }

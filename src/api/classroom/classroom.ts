@@ -1,3 +1,5 @@
-import Ax from '@/utils/axiosInstance'
+import Ax from '@/api/index'
 export const getAllClassroom = (params: any) =>
   Ax.get('/service-classroom/classroom/getAllClassroom', params)
+export const addClassroom = (params: any) =>
+  Ax.post('/service-classroom/classroom/addClassroom', params)

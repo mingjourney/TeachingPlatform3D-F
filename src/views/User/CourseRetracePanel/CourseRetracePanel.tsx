@@ -1,12 +1,12 @@
 import React from 'react'
-import WebRTCExample from '../WebRTCExample/WebRTCExample'
+// import WebRTCExample from '../WebRTCExample/WebRTCExample'
+import ThreeScene from '@/views/Three/ThreeScene/ThreeScene'
 import 'webrtc-adapter'
 
 const CourseRetracePanel: React.FC = () => {
   return (
     <div>
-      <h1 className="text-lg">难点功课测试阶段 成果展示</h1>
-      <WebRTCExample />
+      <ThreeScene />
     </div>
   )
 }
