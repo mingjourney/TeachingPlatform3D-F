@@ -16,7 +16,6 @@ const App: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
   const messageObj = useSelector((state: RootState) => state.message)
   useEffect(() => {
-    console.log('hasMounted', hasMounted)
     // messageApi[messageObj.type](messageObj.content)
     if (hasMounted.current) {
       messageApi.info(messageObj.content)

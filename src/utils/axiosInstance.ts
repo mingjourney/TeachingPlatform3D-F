@@ -13,8 +13,8 @@ service.defaults.timeout = 5000
 // 请求拦截器
 service.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem('token')
-      ? localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
+      ? sessionStorage.getItem('token')
       : ''
     token && (config.headers['x-auth-token'] = token)
     return config

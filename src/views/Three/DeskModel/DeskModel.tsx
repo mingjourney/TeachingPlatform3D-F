@@ -5,7 +5,6 @@ import { Environment, OrbitControls, useGLTF } from '@react-three/drei'
 const DeskModel: React.FC<{ position: number[] }> = ({ position }) => {
   const { scene } = useGLTF('/assets/andesk.glb') as any
   const clonedScene = useMemo(() => scene.clone(), [scene])
-  console.log('position', position)
   // const ref = useRef<any>(null)
   // useFrame(() => {
   //   if (ref.current) {

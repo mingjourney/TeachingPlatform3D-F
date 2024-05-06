@@ -1,7 +1,15 @@
 import { loginUser } from '@/api/user/login'
-import { Button, Form, type FormProps, Input } from 'antd'
+import {
+  Button,
+  Form,
+  type FormProps,
+  Input,
+  Radio,
+  RadioChangeEvent
+} from 'antd'
 import { useNavigate } from 'react-router-dom'
-import React from 'react'
+import React, { useState } from 'react'
+import { userInfo } from '@/api/user/user'
 interface Props {
   loginMethod: number
 }
@@ -15,6 +23,13 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
     username?: string
     email?: string
     password?: string
+    role: number
+  }
+  const [role, setRole] = useState(1)
+
+  const onChange = (e: RadioChangeEvent) => {
+    console.log('radio checked', e.target.value)
+    setRole(e.target.value)
   }
   // 登录成功跳转‘/’路径
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
@@ -25,7 +40,9 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
     const { code, data } = await loginUser(formData)
     console.log('code', code, 'data', data)
     if (code === '20000') {
-      localStorage.setItem('token', data.token)
+      sessionStorage.setItem('token', data.token)
+      const { data: userDetail } = await userInfo({})
+      sessionStorage.setItem('userInfo', JSON.stringify(userDetail))
       navigate('/')
       return true
     }
@@ -47,7 +64,6 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -72,6 +88,14 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
         rules={[{ required: true, message: '请输入您的密码！' }]}
       >
         <Input.Password />
+      </Form.Item>
+
+      <Form.Item<FieldType> label="Role" name="role">
+        <Radio.Group onChange={onChange} value={role}>
+          <Radio value={1}>教师</Radio>
+          <Radio value={2}>学生</Radio>
+          <Radio value={3}>管理员</Radio>
+        </Radio.Group>
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

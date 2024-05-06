@@ -6,6 +6,9 @@ module.exports = {
       padding: {
         1: '30px'
       },
+      fontSize: {
+        'gg': '.625rem', // 10px
+      },
       subTitleLine: 'flex justify-between items-center h-14'
     }
   },

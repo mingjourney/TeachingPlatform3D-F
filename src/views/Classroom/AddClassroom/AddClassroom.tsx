@@ -215,7 +215,7 @@ const AddClassroom: React.FC = () => {
           </Button>
         </Form.Item>
       </Form>
-      <div>
+      <div className="mt-64">
         <button onClick={() => dispatch(increment())}>Increment</button>
         <span>{count}</span>
         <button onClick={() => dispatch(decrement())}>Decrement</button>

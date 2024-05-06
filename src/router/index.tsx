@@ -9,7 +9,7 @@ const withLoadingComponent = (comp: JSX.Element) => (
   <React.Suspense fallback={<div>loading...</div>}>{comp}</React.Suspense>
 )
 const RequireAuth = ({ children }: any) => {
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token')
   return token ? children : <Navigate to="/login" replace />
 }
 const routes = [
