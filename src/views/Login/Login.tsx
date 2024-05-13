@@ -24,13 +24,12 @@ const Login: React.FC = () => {
   }
   return (
     <div className="flex flex-col justify-center items-center columns h-dvh ">
-      <h1 className="text-3xl font-bold m-10">Login 3D Teaching Platform</h1>
+      <h1 className="text-3xl font-bold m-10">3D虚拟教室系统登录</h1>
       <Tabs
         defaultActiveKey="1"
         items={items}
         centered
         onChange={onChange}
-        className=" w-96"
       />
     </div>
   )

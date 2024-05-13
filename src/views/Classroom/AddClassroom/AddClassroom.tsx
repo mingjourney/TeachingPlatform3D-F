@@ -75,7 +75,6 @@ const AddClassroom: React.FC = () => {
       rows = parseInt(rowsStr, 10)
       columns = parseInt(columnsStr, 10)
     }
-    const capacity = rows * columns
     // 处理时间
     const timeRange =
       selectedTime === 4
@@ -90,7 +89,6 @@ const AddClassroom: React.FC = () => {
       isAuth,
       password: isAuth ? password : '', // 只有在 isAuth 为 true 时才包含密码
       description,
-      capacity,
       rows,
       columns,
       ...timeRange,

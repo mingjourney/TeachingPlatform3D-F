@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ReactECharts from 'echarts-for-react'
 import * as echarts from 'echarts'
-import { useFrame } from '@react-three/fiber'
+import moment from 'moment'
 
 interface INetworkData {
   time: string // 时间戳
@@ -20,49 +20,26 @@ const NetworkStatusChart: React.FC<INetworkStatusChartProps> = ({
   const [option, setOption] = useState<any>({})
 
   useEffect(() => {
+    updateChartData(initialData)
+
     const timer = setInterval(() => {
       // 模拟数据更新
+      const currentTime = moment().format('HH:mm:ss')
+
       initialData.push({
-        time: new Date().toLocaleString(),
+        time: currentTime,
         status: Math.random() * 2 + 50
       })
-      console.log(navigator.connection)
+      if (initialData.length === 15) {
+        initialData.slice(3)
+      }
+      // console.log(navigator.connection)
       updateChartData(initialData)
-    }, 1000) // 每秒更新一次数据
+    }, 2000) // 每2秒更新一次数据
 
     return () => clearInterval(timer) // 清理定时器
   }, [])
-  function FPSCounter() {
-    const [lastCallTime, setLastCallTime] = useState(Date.now())
-    const [frames, setFrames] = useState(0)
 
-    useFrame(() => {
-      const now = Date.now()
-      const deltaTime = (now - lastCallTime) / 1000 // 秒数
-      setLastCallTime(now)
-
-      // 每秒更新一次帧率
-      if (deltaTime >= 1) {
-        console.log(`FPS: ${frames.toFixed(1)}`)
-        setFrames(0)
-        setLastCallTime(now)
-      } else {
-        setFrames(frames + 1)
-      }
-    })
-
-    return null
-  }
-
-  // const getNetworkStatus = () => {
-  //   const connection = navigator.connection
-  //   if (connection) {
-  //     return connection.effectiveType || 'unknown'
-  //   } else {
-  //     console.warn('Network information is not available')
-  //     return 'unknown'
-  //   }
-  // }
   const updateChartData = (data: INetworkData[]) => {
     if (chartRef.current && chartRef.current.getEchartsInstance()) {
       const echartInstance = chartRef.current.getEchartsInstance()
@@ -96,6 +73,9 @@ const NetworkStatusChart: React.FC<INetworkStatusChartProps> = ({
           axisLabel: {
             color: '#666'
           }
+        },
+        grid: {
+          top: 20
         },
         series: [
           {
@@ -133,14 +113,7 @@ const NetworkStatusChart: React.FC<INetworkStatusChartProps> = ({
     setOption(initialOption)
   }, [initialData])
 
-  return (
-    <ReactECharts
-      ref={chartRef}
-      option={option}
-      notMerge={true}
-      style={{ height: '400px', width: '100%', margin: '0 auto' }} // 增加宽度并居中
-    />
-  )
+  return <ReactECharts ref={chartRef} option={option} notMerge={true} />
 }
 
 export default NetworkStatusChart

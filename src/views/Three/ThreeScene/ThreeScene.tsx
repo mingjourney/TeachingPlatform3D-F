@@ -1,96 +1,108 @@
 import { useEffect, useState } from 'react'
-import { Canvas, useThree, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { AxesHelper } from 'three'
+import * as THREE from 'three'
 import {
+  Box,
   Environment,
   OrbitControls,
   PerspectiveCamera,
   Text
 } from '@react-three/drei'
+import { suspend } from 'suspend-react'
+const forest = import('@pmndrs/assets/hdri/forest.exr').then(
+  (module) => module.default
+)
 import DeskModel from '../DeskModel/DeskModel'
 import ClassroomModel from '../ClassroomModel/ClassroomModel'
-interface ThreeSceneProps {
-  rows: number
-  columns: number
-  currentStudentList: number[]
+import { useAppSelector } from '@/store/hooks'
+import StudentBoxWithMessage from '../StudentBoxWithMessage/StudentBoxWithMessage'
+type studentRealTimeInfo = {
+  id: number
+  nickname: number
+  position: any
 }
+interface ThreeSceneProps {
+  deskPositionArr: Array<Array<number>>
+  currentStudentList: studentRealTimeInfo[]
+}
+
 const ThreeScene: React.FC<ThreeSceneProps> = ({
-  rows = 6,
-  columns = 8,
+  deskPositionArr = [],
   currentStudentList = []
 }) => {
-  const offsetRow = (rows - 1) / 2
-  const offsetColumn = (columns - 1) / 2
-  const [positionArr, setPositionArr] = useState([])
-  // const CameraLogger = () => {
-  //   const { camera } = useThree()
-
-  //   useFrame(() => {
-  //     // console.log('摄像头位置:', camera.position)
-  //     // console.log('摄像头旋转:', camera.rotation)
-  //   })
-
-  //   return null // 这个组件不需要渲染任何东西
-  // }
+  const user = useAppSelector((state) => state.user)
+  const [target, setTarget] = useState<THREE.Vector3>(
+    new THREE.Vector3(0, 0, 0)
+  )
+  const [cameraPosition, setCameraPosition] = useState([0, 0, 0]) // 新增状态来保存摄像头的目标点
   useEffect(() => {
-    const positionArr = []
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < columns; j++) {
-        positionArr.push([offsetColumn - j, 0, offsetRow - i])
-      }
+    const ownPosition = currentStudentList.find((stu) => stu.id === user.id)
+      ?.position
+
+    if (ownPosition && ownPosition.length === 3) {
+      const newPosition = [...ownPosition]
+      // 摄像头位置位于学生上方
+      newPosition[0] += -0.5
+      newPosition[1] += 1
+      newPosition[2] += 2
+      setCameraPosition(newPosition)
     }
-    console.log('wc', rows, columns)
-
-    setPositionArr(positionArr)
-  }, [rows, columns])
+  }, [currentStudentList])
+  // 刚进房间根据角色调整摄像头
   useEffect(() => {
-    currentStudentList.push('咕咕加密', '柯颖花')
+    if (user.role === '学生') {
+      setTarget(new THREE.Vector3(0, 2.1, 8.5))
+    }
   }, [])
-  // 新增: 渲染文本Mesh的函数
-  const renderTextMesh = (text: number, position: number[], key: number) => {
-    return (
-      <mesh position={position} key={key}>
-        <Text fontSize={0.5} anchorX="center" anchorY="middle">
-          {text}
-        </Text>
-      </mesh>
-    )
+  const CameraLogger = () => {
+    const { camera } = useThree()
+    useFrame(() => {
+      camera.lookAt(target)
+    })
+    return null
   }
-  const texts = ['aa', 'aa', 'ewa', 'eda']
 
   return (
-    <div className="w-full h-screen">
-      <Canvas>
-        <SceneElements />
-        <PerspectiveCamera makeDefault position={[0, 2.1, 8.5]} fov={65} />
-        <group position={[-0.45, 0, 2.3]}>
-          {positionArr.map((position, index) => (
-            <DeskModel key={index} position={position} />
-          ))}
-        </group>
-        <group position={[-0.45, 0.8, 2.3]}>
-          {currentStudentList.map((text, index) => (
-            // 假设我们将所有文本放置在同一位置以简化示例，实际应用中应根据需求调整位置
-            <>{renderTextMesh(text, [0, 0, index * 1.5], index)}</>
-          ))}
-        </group>
-        {/* <CameraLogger /> */}
-        <Environment preset="forest" background />
-        <ClassroomModel position={[0, -0.22, 0]} scale={1.8} />
-      </Canvas>
-    </div>
+    <Canvas>
+      <SceneElements />
+      <PerspectiveCamera
+        makeDefault
+        position={cameraPosition}
+        fov={65}
+        rotation={[-Math.PI / 2, 3, 0]}
+      />
+      {/* <PerspectiveCamera makeDefault position={[0, 2.1, 8.5]} fov={65} /> */}
+      <group position={[-0.45, 0, 2.3]}>
+        {deskPositionArr.flat().map((position, index) => (
+          <DeskModel key={index} position={position} />
+        ))}
+      </group>
+
+      <group position={[0, 0.4, 3]}>
+        {currentStudentList.map((student, index) => (
+          <group key={index} position={student.position}>
+            <StudentBoxWithMessage key={index} student={student} />
+          </group>
+        ))}
+      </group>
+      <Environment files={suspend(forest)} />
+      {/* <Environment preset="forest" background /> */}
+      <ClassroomModel position={[0, -0.22, 0]} scale={1.8} />
+      <CameraLogger />
+    </Canvas>
   )
 }
 
 const SceneElements = () => (
   <>
     <primitive object={new AxesHelper(10)} />
-    <ambientLight intensity={0.5} />
+    <ambientLight intensity={2.5} />
     <spotLight
-      position={[10, 10, 10]}
+      position={[0, 2, 10]}
       angle={0.15}
       penumbra={1}
-      decay={0}
+      decay={0.1}
       intensity={Math.PI}
     />
     <OrbitControls />

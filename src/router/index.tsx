@@ -2,11 +2,14 @@ import AdminApp from '@/views/Admin/AdminApp/AdminApp'
 import Login from '@/views/Login/Login'
 import OnlineClassroom3D from '@/views/OnlineClassroom3D/OnlineClassroom3D'
 import UserApp from '@/views/User/UserApp/UserApp'
+import { Spin } from 'antd'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const withLoadingComponent = (comp: JSX.Element) => (
-  <React.Suspense fallback={<div>loading...</div>}>{comp}</React.Suspense>
+  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>
+    {comp}
+  </React.Suspense>
 )
 const RequireAuth = ({ children }: any) => {
   const token = sessionStorage.getItem('token')
@@ -32,7 +35,11 @@ const routes = [
   },
   {
     path: '/*',
-    element: withLoadingComponent(<UserApp />)
+    element: withLoadingComponent(
+      <RequireAuth>
+        <UserApp />
+      </RequireAuth>
+    )
   }
 ]
 

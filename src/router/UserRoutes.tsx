@@ -7,10 +7,11 @@ import MyPage from '@/views/User/MyPage/MyPage'
 import Difficulty from '@/views/Difficulty/Difficulty'
 import CourseRetracePanel from '@/views/User/CourseRetracePanel/CourseRetracePanel'
 import AddClassroom from '@/views/Classroom/AddClassroom/AddClassRoom'
+import { Spin } from 'antd'
 const Home = lazy(() => import('../views/Home/Home'))
 
 const withLoadingComponent = (comp: JSX.Element) => (
-  <React.Suspense fallback={<div>loading...</div>}>{comp}</React.Suspense>
+  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>{comp}</React.Suspense>
 )
 interface routesType {
   path: string

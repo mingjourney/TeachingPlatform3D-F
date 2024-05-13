@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, Button, List, Skeleton } from 'antd'
+import { getUserCourseHistory } from '@/api/user/user'
 
 interface DataType {
   gender?: string
@@ -35,6 +36,8 @@ const UserManageList: React.FC = () => {
         setData(res.results)
         setList(res.results)
       })
+    const data = getUserCourseHistory({})
+    console.log('data', data)
   }, [])
 
   const onLoadMore = () => {

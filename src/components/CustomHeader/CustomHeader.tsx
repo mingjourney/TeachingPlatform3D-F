@@ -11,7 +11,9 @@ const { Header } = Layout
 //     ? '/' + props.location.pathname.split('/')[1]
 //     : '/'
 // ]
-import { useAppSelector, useAppDispatch } from '@/store/hooks'
+import { useAppSelector } from '@/store/hooks'
+import { useDispatch } from 'react-redux'
+import { saveUser } from '@/store/features/userSlice'
 const CustomHeader: React.FC<{
   items: MenuProps['items']
   dropItems: MenuProps['items']
@@ -24,8 +26,13 @@ const CustomHeader: React.FC<{
     console.log('click ', e)
     navigate(e.key)
   }
+  const dispatch = useDispatch()
   const handleDropdownClick: MenuProps['onClick'] = ({ key }) => {
-    
+    console.log('key', key)
+    if (key === '/login') {
+      sessionStorage.clear()
+      dispatch(saveUser({}))
+    }
     navigate(key)
   }
   // const dropClick = (e: any) => {
@@ -55,7 +62,9 @@ const CustomHeader: React.FC<{
       >
         <a onClick={(e) => e.preventDefault()}>
           <Space>
-            {user.name}
+            欢迎
+            {user.role}
+            {user.nickname}
             <DownOutlined />
           </Space>
         </a>

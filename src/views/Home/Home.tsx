@@ -6,7 +6,7 @@ import type { Dayjs } from 'dayjs'
 
 import CourseCard from '@/components/CourseCard/CourseCard'
 import SvgIcon from '@/components/SvgIcon/SvgIcon'
-import { getAllClassroom } from '@/api/classroom/classroom'
+import { getClassroomList } from '@/api/classroom/classroom'
 import { Classroom } from '@/interface/classroom'
 
 const Home: React.FC = () => {
@@ -24,8 +24,10 @@ const Home: React.FC = () => {
     fetchClassroomList()
   }, [])
   const fetchClassroomList = async () => {
-    const { data } = await getAllClassroom({})
-    setPopularClassList(data)
+    const {
+      data: { classroomList }
+    } = await getClassroomList({ pageIndex: 1, pageSize: 4 })
+    setPopularClassList(classroomList)
   }
   return (
     <Row gutter={[16, 16]}>

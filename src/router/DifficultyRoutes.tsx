@@ -2,9 +2,13 @@ import React from 'react'
 import BrowsingHistory from '@/views/BrowsingHistory/BrowsingHistory'
 import { LaptopOutlined } from '@ant-design/icons'
 import EyeTracker from '@/views/EyeTracker/EyeTracker'
+import { Spin } from 'antd'
+import ReactSpringTest from '@/views/Three/ReactSpringTest/ReactSpringTest'
 
 const withLoadingComponent = (comp: JSX.Element) => (
-  <React.Suspense fallback={<div>loading...</div>}>{comp}</React.Suspense>
+  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>
+    {comp}
+  </React.Suspense>
 )
 const DifficultyRoutes = [
   {
@@ -20,7 +24,7 @@ const DifficultyRoutes = [
       {
         path: 'webRTC',
         label: 'WebRTC直播同步屏幕和摄像头',
-        element: withLoadingComponent(<BrowsingHistory />)
+        element: withLoadingComponent(<ReactSpringTest />)
       }
     ]
   }

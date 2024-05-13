@@ -4,9 +4,12 @@ import Favorates from '@/views/Favorates/Favorates'
 import BrowsingHistory from '@/views/BrowsingHistory/BrowsingHistory'
 import PersonalCenter from '@/views/PersonalCenter/PersonalCenter'
 import { LaptopOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 
 const withLoadingComponent = (comp: JSX.Element) => (
-  <React.Suspense fallback={<div>loading...</div>}>{comp}</React.Suspense>
+  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>
+    {comp}
+  </React.Suspense>
 )
 const UserRoutesPersonal = [
   {

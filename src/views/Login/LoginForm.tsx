@@ -10,6 +10,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 import { userInfo } from '@/api/user/user'
+import { useDispatch } from 'react-redux'
+import { saveUser } from '@/store/features/userSlice'
+
 interface Props {
   loginMethod: number
 }
@@ -25,6 +28,7 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
     password?: string
     role: number
   }
+  const dispatch = useDispatch()
   const [role, setRole] = useState(1)
 
   const onChange = (e: RadioChangeEvent) => {
@@ -42,6 +46,7 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
     if (code === '20000') {
       sessionStorage.setItem('token', data.token)
       const { data: userDetail } = await userInfo({})
+      dispatch(saveUser(userDetail))
       sessionStorage.setItem('userInfo', JSON.stringify(userDetail))
       navigate('/')
       return true
@@ -90,13 +95,13 @@ const LoginForm: React.FC<Props> = ({ loginMethod }) => {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item<FieldType> label="Role" name="role">
+      {/* <Form.Item<FieldType> label="Role" name="role">
         <Radio.Group onChange={onChange} value={role}>
           <Radio value={1}>教师</Radio>
           <Radio value={2}>学生</Radio>
           <Radio value={3}>管理员</Radio>
         </Radio.Group>
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">

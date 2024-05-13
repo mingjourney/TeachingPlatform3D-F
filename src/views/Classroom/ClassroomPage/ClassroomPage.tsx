@@ -9,7 +9,7 @@ const ClassroomPage: React.FC = () => {
   return (
     <div>
       教室列表23232
-      <Button onClick={AddClassroom}>新建教室</Button>
+      <Button onClick={AddClassroom}>新建教室1</Button>
     </div>
   )
 }

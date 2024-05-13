@@ -1,7 +1,7 @@
 // import React from "react";
 
 // const withLoadingComponent = (comp: JSX.Element) => (
-//     <React.Suspense fallback={<div>loading...</div>}>{comp}</Reac.Suspense>
+//     <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>{comp}</Reac.Suspense>
 //   )
 // const adminRoutes = [
 //     {

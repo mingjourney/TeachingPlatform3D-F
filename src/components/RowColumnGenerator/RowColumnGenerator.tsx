@@ -19,7 +19,7 @@ const RowColumnGenerator: React.FC<Props> = ({ row, column, emitResult }) => {
   const handleCellClick = (rowIndex: number, columnIndex: number) => {
     const clickedCell = { row: rowIndex, column: columnIndex }
     setClickedCell(clickedCell)
-    emitResult(rowIndex, columnIndex)
+    emitResult(rowIndex + 1, columnIndex + 1)
   }
   const handleCellHover = (rowIndex: number, columnIndex: number) => {
     const hoveredCell = { row: rowIndex, column: columnIndex }
@@ -32,7 +32,7 @@ const RowColumnGenerator: React.FC<Props> = ({ row, column, emitResult }) => {
       onMouseLeave={() => handleCellHover(-1, -1)}
     >
       <h3>
-        当前选中教室{hoveredCell.row}行,{hoveredCell.column}列
+        当前选中教室{hoveredCell.row + 1}行,{hoveredCell.column + 1}列
       </h3>
       {Array(row)
         .fill(null)
