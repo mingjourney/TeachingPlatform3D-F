@@ -4,10 +4,10 @@ import App from './App.tsx'
 import { persistor, store } from './store/store.ts'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { Globals } from '@react-spring/core'
-
 import { PersistGate } from 'redux-persist/integration/react'
 import '@/assets/styles/global.scss'
+import { Globals } from '@react-spring/core'
+
 Globals.assign({
   frameLoop: 'always'
 })

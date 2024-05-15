@@ -98,7 +98,9 @@ const ClassroomHome: React.FC = () => {
         教室列表
         <BoxScrolling />
       </h2>
-      <Button className='mb-2' onClick={AddClassroom}>新建教室</Button>
+      <Button className="mb-2" onClick={AddClassroom}>
+        新建教室
+      </Button>
       <Table
         columns={columns}
         dataSource={classroomList}

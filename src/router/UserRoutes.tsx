@@ -6,12 +6,16 @@ import ClassroomHome from '@/views/Classroom/ClassroomHome/ClassroomHome'
 import MyPage from '@/views/User/MyPage/MyPage'
 import Difficulty from '@/views/Difficulty/Difficulty'
 import CourseRetracePanel from '@/views/User/CourseRetracePanel/CourseRetracePanel'
-import AddClassroom from '@/views/Classroom/AddClassroom/AddClassRoom'
+import ResourceBoard from '@/views/ResourceBoard/ResourceBoard'
+import AddClassroom from '@/views/Classroom/AddClassroom/AddClassroom'
+import CourseDetail from '@/views/CourseDetail/CourseDetail'
 import { Spin } from 'antd'
 const Home = lazy(() => import('../views/Home/Home'))
 
 const withLoadingComponent = (comp: JSX.Element) => (
-  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>{comp}</React.Suspense>
+  <React.Suspense fallback={<Spin tip="Loading">loading</Spin>}>
+    {comp}
+  </React.Suspense>
 )
 interface routesType {
   path: string
@@ -55,6 +59,20 @@ const userRoutes: routesType[] = [
     path: 'learnboard',
     label: '学习面板',
     element: withLoadingComponent(<CourseRetracePanel />)
+  },
+  {
+    path: 'resourceboard',
+    label: '学习资源',
+    children: [
+      {
+        path: '',
+        element: withLoadingComponent(<ResourceBoard />)
+      },
+      {
+        path: 'course/:courseId',
+        element: withLoadingComponent(<CourseDetail />)
+      }
+    ]
   },
   {
     path: 'teachboard',

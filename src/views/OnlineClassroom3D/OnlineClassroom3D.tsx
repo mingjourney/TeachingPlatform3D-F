@@ -20,6 +20,10 @@ import RowColumnSelector from '@/components/RowColumnSelector/RowColumnSelector'
 import OnlineVisualPanel from '../OnlineVisualPanel/OnlineVisualPanel'
 import VideoInfoArgs from '../VideoInfoArgs/VideoInfoArgs'
 import moment from 'moment'
+
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import emojiImg from '@/assets/images/表情包.png'
 type studentRealTimeInfo = {
   id: number
   nickname: number
@@ -34,6 +38,7 @@ const OnlineclassNameroom3D: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [ownPosition, setOwnPosition] = useState([0, 0])
   const [roomLiveInfo, setRoomLiveInfo] = useState<any>({})
+  const startTimeRef = useRef({})
   const [currentStudentList, setCurrentStudentList] = useState<
     studentRealTimeInfo[]
   >([])
@@ -56,7 +61,23 @@ const OnlineclassNameroom3D: React.FC = () => {
   const { id: userId } = getUserInfo()
   // const roomId = ref('3333')
   const socket = io('http://localhost:3456')
+  const [sendMessage, setSendMessage] = useState('')
 
+  const addEmoji = (e) => {
+    setSendMessage(sendMessage + e.native)
+  }
+
+  const emojiPicker = (
+    <Popover
+      content={<Picker data={data} onEmojiSelect={addEmoji} />}
+      trigger="click"
+      placement="bottomLeft"
+    >
+      <Button>
+        <img src={emojiImg} className="w-8" />
+      </Button>
+    </Popover>
+  )
   function initConnect() {
     // socket = io('https://signaling.fedtop.com')
 
@@ -92,7 +113,6 @@ const OnlineclassNameroom3D: React.FC = () => {
       console.log('deskPositionArr', deskPositionArrRef.current) // 使用引用获取最新状态
       console.log('open', open)
       const [row, column] = data.ownPosition
-      console.log('row,column', row, column)
       const updatedStudentList = currentStudentListRef.current.map(
         (student) => {
           if (student.id === data.userId) {
@@ -127,6 +147,7 @@ const OnlineclassNameroom3D: React.FC = () => {
   }
   // 连接成功
   function handleConnect() {
+    startTimeRef.current = moment().format('YYYY-MM-DD HH:mm:ss')
     socket.emit('join', { roomId: roomId, ...user })
   }
   function handleTurnHead(score: number) {
@@ -136,9 +157,7 @@ const OnlineclassNameroom3D: React.FC = () => {
       setEmitedScore(score)
     }
   }
-
   useEffect(() => {
-    console.log('gggg')
     const init = async () => {
       try {
         // const {
@@ -158,8 +177,14 @@ const OnlineclassNameroom3D: React.FC = () => {
     init()
     // cleanup
     return () => {
+      const endTime = moment().format('YYYY-MM-DD HH:mm:ss')
       console.log('leave')
-      socket.emit('leave', { userId, roomId })
+      socket.emit('leave', {
+        userId,
+        roomId,
+        startTime: startTimeRef.current,
+        endTime
+      })
       socket.disconnect()
     }
   }, [])
@@ -218,6 +243,9 @@ const OnlineclassNameroom3D: React.FC = () => {
   const onChange = (key: string) => {
     console.log(key)
   }
+  const changeMessage = (e: any) => {
+    setSendMessage(e.target.value)
+  }
   return (
     <div className="flex flex-col text-gray-300 text-xs">
       <Drawer
@@ -242,9 +270,10 @@ const OnlineclassNameroom3D: React.FC = () => {
             rules={[{ required: true, message: '不能为空!' }]}
           >
             <Space.Compact style={{ width: '100%' }}>
-              <Input />
+              <Input value={sendMessage} onChange={changeMessage} />
+              {emojiPicker}
               <Button type="primary" htmlType="submit">
-                Submit
+                发送信息
               </Button>
             </Space.Compact>
           </Form.Item>

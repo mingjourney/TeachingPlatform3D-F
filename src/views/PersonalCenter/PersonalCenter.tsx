@@ -1,5 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import { Divider, Form, Input, Upload, message } from 'antd'
+import { Form, Input, Upload, message } from 'antd'
 import React, { useState } from 'react'
 const PersonalCenter: React.FC = () => {
   const [loading, setLoading] = useState(false)
