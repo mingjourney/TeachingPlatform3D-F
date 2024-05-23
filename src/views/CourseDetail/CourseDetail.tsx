@@ -51,7 +51,7 @@ const CourseDetail = () => {
 
   useEffect(() => {
     const fetchCourseDetailById = async (courseId) => {
-      const { data: {essay, favorate } = await fetchEssayDetailById({ courseId: courseId })
+      const { data: {essay, favorate }} = await fetchEssayDetailById({ courseId: courseId })
       setCourseDetail(data)
     }
     fetchCourseDetailById(courseId)

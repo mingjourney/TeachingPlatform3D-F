@@ -94,13 +94,18 @@ const ClassroomHome: React.FC = () => {
 
   return (
     <div>
-      <h2 className="flex text-lg pb-2">
-        教室列表
-        <BoxScrolling />
-      </h2>
-      <Button className="mb-2" onClick={AddClassroom}>
-        新建教室
-      </Button>
+      <div className="flex justify-between">
+        <div className="">
+          <h2 className="flex text-lg pb-2">
+            教室列表
+            <BoxScrolling />
+          </h2>
+        </div>
+        <Button type="primary" className="mb-2" onClick={AddClassroom}>
+          新建教室
+        </Button>
+      </div>
+
       <Table
         columns={columns}
         dataSource={classroomList}

@@ -10,6 +10,7 @@ import ResourceBoard from '@/views/ResourceBoard/ResourceBoard'
 import AddClassroom from '@/views/Classroom/AddClassroom/AddClassroom'
 import CourseDetail from '@/views/CourseDetail/CourseDetail'
 import { Spin } from 'antd'
+import UploadResouce from '@/views/UploadResouce/UploadReource'
 const Home = lazy(() => import('../views/Home/Home'))
 
 const withLoadingComponent = (comp: JSX.Element) => (
@@ -72,6 +73,10 @@ const userRoutes: routesType[] = [
         path: 'course/:courseId',
         element: withLoadingComponent(<CourseDetail />)
       }
+      // {
+      //   path: 'uploadResource',
+      //   element: withLoadingComponent(<UploadResouce />)
+      // }
     ]
   },
   {
