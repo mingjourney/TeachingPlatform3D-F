@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Input, Pagination } from 'antd'
+import { Input, Pagination, PaginationProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { debounce } from 'lodash'
 
@@ -10,7 +10,6 @@ import {
 const EssayLearn = () => {
   const [selectedCategory, setSelectedCategory] = useState(1)
   const [allCategory, setAllCategory] = useState([])
-  const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [total, setTotal] = useState(0)
   const [selectedSortType, setSelectedSortType] = useState(1)
@@ -22,7 +21,7 @@ const EssayLearn = () => {
 
   const [courses, setCourses] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10
+  // const itemsPerPage = 10
   const navigate = useNavigate()
   const handleCourseClick = (courseId) => {
     navigate(`/resourceboard/course/${courseId}`)

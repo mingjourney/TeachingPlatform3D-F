@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { AxesHelper } from 'three'
 import * as THREE from 'three'
@@ -7,7 +7,10 @@ import {
   Environment,
   OrbitControls,
   PerspectiveCamera,
-  Text
+  Text,
+  useAspect,
+  useTexture,
+  useVideoTexture
 } from '@react-three/drei'
 import { suspend } from 'suspend-react'
 const forest = import('@pmndrs/assets/hdri/forest.exr').then(
@@ -36,6 +39,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     new THREE.Vector3(0, 0, 0)
   )
   const [cameraPosition, setCameraPosition] = useState([0, 0, 0]) // 新增状态来保存摄像头的目标点
+  const [size, setSize] = useState()
   useEffect(() => {
     const ownPosition = currentStudentList.find((stu) => stu.id === user.id)
       ?.position
@@ -49,6 +53,16 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
       setCameraPosition(newPosition)
     }
   }, [currentStudentList])
+  function VideoMaterial({ url }) {
+    const texture = useVideoTexture(url)
+    return <meshBasicMaterial map={texture} toneMapped={false} />
+  }
+
+  function FallbackMaterial({ url }) {
+    const texture = useTexture(url)
+    return <meshBasicMaterial map={texture} toneMapped={false} />
+  }
+
   // 刚进房间根据角色调整摄像头
   useEffect(() => {
     if (user.role === '学生') {
@@ -60,6 +74,7 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
     useFrame(() => {
       camera.lookAt(target)
     })
+    setSize(useAspect(0.02, 0.01))
     return null
   }
 
@@ -72,6 +87,12 @@ const ThreeScene: React.FC<ThreeSceneProps> = ({
         fov={65}
         rotation={[-Math.PI / 2, 3, 0]}
       />
+      <mesh position={[-0.02, 1.87, 9.96]} rotation={[0, -Math.PI, 0]}>
+        <planeGeometry args={[3.10, 1.78]}/>
+        <Suspense fallback={<FallbackMaterial url="/assets/Video.png" />}>
+          <VideoMaterial url="/assets/20级顾家铭.MOV" />
+        </Suspense>
+      </mesh>
       {/* <PerspectiveCamera makeDefault position={[0, 2.1, 8.5]} fov={65} /> */}
       <group position={[-0.45, 0, 2.3]}>
         {deskPositionArr.flat().map((position, index) => (

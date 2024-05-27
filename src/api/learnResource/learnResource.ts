@@ -10,3 +10,15 @@ export const fetchEssaysByInfo = (params: any) =>
 
 export const fetchEssayDetailById = (params: any) =>
   Ax.get('/service-essay/essay/getEssayDetailById', { params })
+
+export const addUserFavorite = (params: any) =>
+  Ax.post('/service-essay/essay/addUserFavorite', params)
+
+export const deleteUserFavorite = (params: any) =>
+  Ax.post('/service-essay/essay/deleteUserFavorite', params)
+
+export const addComment = (params: any) =>
+  Ax.post('/service-essay/essay/addComment', params)
+
+export const getComments = (params: any) =>
+  Ax.get('/service-essay/essay/getComments', { params })

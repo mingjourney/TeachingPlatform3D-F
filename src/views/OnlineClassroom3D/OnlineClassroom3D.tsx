@@ -24,6 +24,7 @@ import moment from 'moment'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import emojiImg from '@/assets/images/表情包.png'
+import LiveStreaming from '@/components/LiveStreaming/LiveStreaming'
 type studentRealTimeInfo = {
   id: number
   nickname: number
@@ -263,6 +264,7 @@ const OnlineclassNameroom3D: React.FC = () => {
         open={rightDrawerOpen}
         placement="right"
         destroyOnClose={false}
+        forceRender
       >
         <Form onFinish={onFinish}>
           <Form.Item
@@ -278,6 +280,7 @@ const OnlineclassNameroom3D: React.FC = () => {
             </Space.Compact>
           </Form.Item>
         </Form>
+        {user.role === '教师' && <LiveStreaming />}
       </Drawer>
       <Modal
         open={open}
