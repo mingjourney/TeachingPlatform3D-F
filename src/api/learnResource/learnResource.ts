@@ -22,3 +22,6 @@ export const addComment = (params: any) =>
 
 export const getComments = (params: any) =>
   Ax.get('/service-essay/essay/getComments', { params })
+
+export const getCommendEssay = (params: any) =>
+  Ax.get('/service-essay/essay/getEssayCommendByUser', { params })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Favorates from '@/views/Favorates/Favorates'
+import Favorites from '@/views/Favorites/Favorites'
 import BrowsingHistory from '@/views/BrowsingHistory/BrowsingHistory'
 import PersonalCenter from '@/views/PersonalCenter/PersonalCenter'
 import { LaptopOutlined } from '@ant-design/icons'
@@ -28,9 +28,9 @@ const UserRoutesPersonal = [
         element: withLoadingComponent(<BrowsingHistory />)
       },
       {
-        path: 'favorates',
+        path: 'favorites',
         label: '收藏夹',
-        element: withLoadingComponent(<Favorates />)
+        element: withLoadingComponent(<Favorites />)
       }
     ]
   }

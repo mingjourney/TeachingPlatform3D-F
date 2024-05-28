@@ -1,5 +1,6 @@
+import { savePassword } from '@/api/user/user'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
-import { Form, Input, Upload, message } from 'antd'
+import { Button, Form, Input, Upload, message } from 'antd'
 import React, { useState } from 'react'
 const PersonalCenter: React.FC = () => {
   const [loading, setLoading] = useState(false)
@@ -41,6 +42,12 @@ const PersonalCenter: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   )
+  const changePassword = async (values) => {
+    const { newPassword } = values
+    const formData = new FormData()
+    formData.append('password', newPassword)
+    await savePassword(formData)
+  }
   return (
     <div className="flex">
       <div className="basis-3/5">
@@ -50,6 +57,7 @@ const PersonalCenter: React.FC = () => {
           autoComplete="off"
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600 }}
+          onFinish={changePassword}
         >
           <Form.Item
             label="旧密码"
@@ -64,6 +72,11 @@ const PersonalCenter: React.FC = () => {
             rules={[{ required: true, message: '请输入新密码!' }]}
           >
             <Input.Password placeholder="请输入新密码" />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button type="primary" htmlType="submit">
+              修改密码
+            </Button>
           </Form.Item>
         </Form>
       </div>
