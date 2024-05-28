@@ -197,7 +197,7 @@ const ResourceList = () => {
   }
   const handleSearchChange = debounce((e) => {
     setSearchTerm(e.target.value)
-  }, 300)
+  }, 200)
   const uploadResource = () => {
     setOpen(true)
     // navigate('uploadResource')
